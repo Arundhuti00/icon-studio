@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<defs><linearGradient id="space-capsule-body" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9DC1F2"/><stop offset="0.32" stop-color="#E1ECFA"/><stop offset="1" stop-color="#5B8EEA"/></linearGradient><linearGradient id="space-capsule-shield" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BC8432"/><stop offset="1" stop-color="#5C3A14"/></linearGradient><radialGradient id="space-capsule-window" cx="0.4" cy="0.35" r="0.7"><stop offset="0" stop-color="#9DC1F2"/><stop offset="1" stop-color="#1A2F6E"/></radialGradient><filter id="space-capsule-tex" filterUnits="userSpaceOnUse" x="-8" y="-8" width="80" height="80" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="0.35" result="soft"/><feTurbulence type="fractalNoise" baseFrequency="2.4" numOctaves="2" seed="7" stitchTiles="stitch" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.9 0 0 0 -0.4" result="dark"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0.9 0 0 -0.42" result="light"/><feMerge result="grain"><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge><feComposite in="grain" in2="soft" operator="in" result="grainIn"/><feMerge><feMergeNode in="soft"/><feMergeNode in="grainIn"/></feMerge></filter></defs>
+<g filter="url(#space-capsule-tex)">
+<rect x="27" y="8" width="10" height="5.5" rx="1.5" fill="#BC8432"/>
+<path d="M24 13 L40 13 L50 44 L14 44 Z" fill="url(#space-capsule-body)"/>
+<path d="M14 44 L50 44 Q50 51 32 51 Q14 51 14 44 Z" fill="url(#space-capsule-shield)"/>
+<circle cx="32" cy="27" r="4.5" fill="url(#space-capsule-window)"/>
+</g>
+</svg>

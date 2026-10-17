@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<defs><linearGradient id="mission-control-screen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F5FD0"/><stop offset="1" stop-color="#1A2F6E"/></linearGradient><linearGradient id="mission-control-desk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3E0B0"/><stop offset="1" stop-color="#BC8432"/></linearGradient><filter id="mission-control-tex" filterUnits="userSpaceOnUse" x="-8" y="-8" width="80" height="80" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="0.35" result="soft"/><feTurbulence type="fractalNoise" baseFrequency="2.4" numOctaves="2" seed="7" stitchTiles="stitch" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.9 0 0 0 -0.4" result="dark"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0.9 0 0 -0.42" result="light"/><feMerge result="grain"><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge><feComposite in="grain" in2="soft" operator="in" result="grainIn"/><feMerge><feMergeNode in="soft"/><feMergeNode in="grainIn"/></feMerge></filter><filter id="mission-control-glow" filterUnits="userSpaceOnUse" x="-8" y="-8" width="80" height="80" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/><feComponentTransfer in="b" result="bb"><feFuncA type="linear" slope="0.85"/></feComponentTransfer><feMerge><feMergeNode in="bb"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<g filter="url(#mission-control-tex)">
+<rect x="8" y="8" width="48" height="30" rx="3" fill="url(#mission-control-screen)"/>
+<path d="M14 32 Q30 6 49 22" fill="none" stroke="#F3E0B0" stroke-opacity="0.8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<g filter="url(#mission-control-glow)"><circle cx="49" cy="22" r="3" fill="#E1ECFA"/></g>
+<path d="M28 38 L36 38 L38 46 L26 46 Z" fill="#8C5A1E"/>
+<rect x="6" y="46" width="52" height="9" rx="2" fill="url(#mission-control-desk)"/>
+<circle cx="15" cy="50.5" r="2" fill="#2F5FD0"/>
+<circle cx="49" cy="50.5" r="2" fill="#5B8EEA"/>
+</g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<defs><clipPath id="saturn-clip-body"><circle cx="32" cy="32" r="18"/></clipPath><radialGradient id="saturn-body" cx="0.38" cy="0.32" r="0.75"><stop offset="0" stop-color="#F3E0B0"/><stop offset="0.5" stop-color="#DDB15E"/><stop offset="1" stop-color="#8C5A1E"/></radialGradient><linearGradient id="saturn-ring" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9DC1F2"/><stop offset="1" stop-color="#2F5FD0"/></linearGradient><filter id="saturn-tex" filterUnits="userSpaceOnUse" x="-8" y="-8" width="80" height="80" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="0.35" result="soft"/><feTurbulence type="fractalNoise" baseFrequency="2.4" numOctaves="2" seed="7" stitchTiles="stitch" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.9 0 0 0 -0.4" result="dark"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0.9 0 0 -0.42" result="light"/><feMerge result="grain"><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge><feComposite in="grain" in2="soft" operator="in" result="grainIn"/><feMerge><feMergeNode in="soft"/><feMergeNode in="grainIn"/></feMerge></filter><filter id="saturn-blur1" filterUnits="userSpaceOnUse" x="-8" y="-8" width="80" height="80" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.2"/></filter></defs>
+<g filter="url(#saturn-tex)">
+<path d="M4 35 A28 7.5 0 0 1 60 35 Z" fill="#1A2F6E"/>
+<circle cx="32" cy="32" r="18" fill="url(#saturn-body)"/>
+<g clip-path="url(#saturn-clip-body)"><g filter="url(#saturn-blur1)"><rect x="12" y="23.5" width="40" height="4.5" fill="#8C5A1E" fill-opacity="0.75"/></g></g>
+<path d="M4 35 A28 7.5 0 0 0 60 35 Z" fill="url(#saturn-ring)" fill-opacity="0.85"/>
+</g>
+</svg>

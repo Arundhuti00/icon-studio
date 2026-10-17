@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<defs><clipPath id="observatory-clip-dome"><path d="M12 34 A20 20 0 0 1 52 34 Z"/></clipPath><linearGradient id="observatory-base" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3E0B0"/><stop offset="1" stop-color="#BC8432"/></linearGradient><radialGradient id="observatory-dome" cx="0.38" cy="0.32" r="0.75"><stop offset="0" stop-color="#E1ECFA"/><stop offset="0.5" stop-color="#9DC1F2"/><stop offset="1" stop-color="#2F5FD0"/></radialGradient><filter id="observatory-tex" filterUnits="userSpaceOnUse" x="-8" y="-8" width="80" height="80" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="0.35" result="soft"/><feTurbulence type="fractalNoise" baseFrequency="2.4" numOctaves="2" seed="7" stitchTiles="stitch" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.9 0 0 0 -0.4" result="dark"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0.9 0 0 -0.42" result="light"/><feMerge result="grain"><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge><feComposite in="grain" in2="soft" operator="in" result="grainIn"/><feMerge><feMergeNode in="soft"/><feMergeNode in="grainIn"/></feMerge></filter><filter id="observatory-blur1" filterUnits="userSpaceOnUse" x="-8" y="-8" width="80" height="80" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="1.2"/></filter></defs>
+<g filter="url(#observatory-tex)">
+<rect x="12" y="34" width="40" height="20" rx="2" fill="url(#observatory-base)"/>
+<path d="M12 34 A20 20 0 0 1 52 34 Z" fill="url(#observatory-dome)"/>
+<g clip-path="url(#observatory-clip-dome)"><g filter="url(#observatory-blur1)"><rect x="29" y="12" width="6" height="22" fill="#1A2F6E"/></g></g>
+<path d="M32 24 L44 12" fill="none" stroke="#8C5A1E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M27 54 L27 46 A5 5 0 0 1 37 46 L37 54 Z" fill="#5C3A14"/>
+</g>
+</svg>

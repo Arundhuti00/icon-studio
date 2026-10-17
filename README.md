@@ -60,21 +60,21 @@ Flat, two-tone icons on a 64 px grid in a hand-painted Indian-folk palette: food
 
 ![Restaurant Folk Icons](examples/restaurant-folk-icons/preview.png)
 
-[Icons](examples/restaurant-folk-icons/icons) · [Rules](examples/restaurant-folk-icons/RULES.md) · [Preview page](examples/restaurant-folk-icons/index.html)
+[Icons](examples/restaurant-folk-icons/icons) · [Rules](examples/restaurant-folk-icons/RULES.md) · [Live preview](https://arundhuti00.github.io/icon-studio/examples/restaurant-folk-icons/)
 
 ### Travel Ink Icons · 90 icons
 Hand-drawn dark grey ink on a 48 px grid, each icon with one leaf green and one tangerine accent: luggage, transport, stays, landmarks, weather and more.
 
 ![Travel Ink Icons](examples/travel-ink-icons/preview.png)
 
-[Icons](examples/travel-ink-icons/icons) · [Rules](examples/travel-ink-icons/RULES.md) · [Preview page](examples/travel-ink-icons/index.html)
+[Icons](examples/travel-ink-icons/icons) · [Rules](examples/travel-ink-icons/RULES.md) · [Live preview](https://arundhuti00.github.io/icon-studio/examples/travel-ink-icons/)
 
 ### Celestial Glass Icons · 64 icons
 Grainy, softly blended space icons in golden browns and ceramic blues on a 64 px grid: planets, spacecraft, astronaut gear, science and a few sci-fi characters.
 
 ![Celestial Glass Icons](examples/celestial-glass-icons/preview.png)
 
-[Icons](examples/celestial-glass-icons/icons) · [Rules](examples/celestial-glass-icons/RULES.md) · [Preview page](examples/celestial-glass-icons/index.html)
+[Icons](examples/celestial-glass-icons/icons) · [Rules](examples/celestial-glass-icons/RULES.md) · [Live preview](https://arundhuti00.github.io/icon-studio/examples/celestial-glass-icons/)
 
 Celestial uses SVG filters for grain and blur. Browsers render them; Figma keeps the blur but drops the grain.
 

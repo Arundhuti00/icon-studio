@@ -1,4 +1,4 @@
-# Travel Ink · Rules v2.2
+# Travel Ink · Rules v2.3
 
 Style taken from the bike illustration reference: thin dark ink line drawing, flat unoutlined colour blocks, chunky soft colour strokes, striped texture.
 
@@ -15,13 +15,8 @@ Style taken from the bike illustration reference: thin dark ink line drawing, fl
 10. **Hand-drawn line** *(v2.0)*: every stroke swells and thins about ±24% along its length and drifts up to 0.25 px. Icons are drawn clean on the 0.5 grid, then a sketch script generates the hand-drawn outlines in `icons/` (rounded to 0.1).
 11. Same optical size across the set (keylines: circle ∅40, portrait 32 × 40, landscape 40 × 32).
 
-## 16 px *(v2.2)*
-Every icon is redrawn, not scaled, in `icons-16/` with the same file name.
-- 16 × 16 grid, 1 px padding (live area 14 × 14), coordinates on a 0.5 grid.
-- Ink: `#2E2E2E`, 1 px. Accent strokes: 2 px. Same caps, joins and palette as the masters.
-- Both accents in every icon, at most 7 shapes, never more shapes than the 24 px master.
-- Gaps at least 1 px, counters at least 1.5 px. Keylines: circle ∅14, portrait 10 × 14, landscape 14 × 10, square 12.
-- Drawn clean, without the hand-drawn wobble: at 16 px the variation is under a pixel and would only blur edges.
+## Sizes *(v2.3)*
+One drawing for every size: there is no separate small set. At 16 px the 48 px master renders at one-third scale, so the 2 px ink line is about ⅔ px and the 4 px accent strokes about 1⅓ px.
 
 ## Do-not-copy list
 - Bike reference: the woman, the bicycle, the phone, the wavy hair, the striped trousers as an object, the shoes.

@@ -23,8 +23,7 @@ Ask only for what's missing; never ask about anything that has a default.
 | Style type | no | outline (also: filled, duotone, two-tone outline) |
 | Stroke | no | 1.5, round caps, round joins |
 | Colour | no | `currentColor` only |
-| Export sizes | no | SVG + PNG at 24, 48, 96 (24 masters); SVG + PNG at 16, 32 (16 px variant) |
-| 16 px variant | no | yes: every icon also gets its own hand-drawn 16 × 16 version (section 5d-2). Skip only if the user says no |
+| Export sizes | no | SVG + PNG at 16, 24, 32, 48, 96, all from the one master SVG |
 | Where to save | no | Downloads (or this conversation's files) |
 | **Where to render** | **always ask** | none; options: preview page, Figma, or both |
 
@@ -39,7 +38,7 @@ A good set looks like one person drew it on one afternoon:
 - **One visual language**: the same stroke, corners, terminals, perspective and detail density everywhere.
 - **Clean geometry**: on-grid points, no stray nodes, no overlaps, nothing outside the live area.
 - **Each icon has one clear metaphor** (a steaming cup, not a cup + saucer + spoon + steam + beans).
-- **16 px is drawn, not scaled**: the 16 px version is sharp at 1×, matches its 24 px master in metaphor and silhouette, and matches the other 16 px icons in weight.
+- **One drawing, every size**: 16 px is the same SVG scaled down, never a separate set. At 16 px the stroke simply scales (1.5 → 1 px); the icon must still be sharp and complete there.
 
 Deliver nothing below this.
 
@@ -56,7 +55,10 @@ Deliver nothing below this.
 10. **Silhouette test.** Each icon, filled solid black at 16 px, still reads as its object.
 11. **Honesty.** You see renders downscaled and cannot judge real-screen hinting. Say so when you deliver and ask the user to check a few icons on a device.
 12. **Cohesive layers; fewest parts.** Every shade or inner layer starts and ends on the object's own edge or a natural seam (a notch, a rim, a fold), never at an arbitrary point inside the shape. Neighbouring parts share the exact same seam curve, so nothing overlaps, floats or pokes out. No translucent or overlapping blobs that make an object look assembled from loose pieces. **When unsure, use the fewest parts that still read as the object.** Check this by eye on large (~300 px) renders of every icon; the lint script can't. *Fails:* a croissant built from overlapping circles, or a shade that starts mid-shape.
-13. **Small size is a redraw, not a scale.** A 24 icon shrunk to 16 lands its .25/.75 points between pixels and its gaps close up. Draw each 16 px icon on its own 16 grid from the `small` rules: keep the master's metaphor, view and silhouette; drop detail until it fits the smaller budget (never add any); widen counters; put straight edges on the pixel grid for the 1 px stroke (.5 for odd strokes); use the same caps, joins and corner language at the small radii. The 16 px icon may never have more shapes than its master. *Fails:* a 16 px burger that is the 24 px burger at 67 %, with blurry buns and a filled-in lettuce line.
+13. **Draw once for 16 and 24.** There is one SVG per icon; 16 px is that SVG at ⅔ scale, so a 1.5 stroke renders as 1 px. Never draw a separate small version. Two things keep the scaled icon clean:
+    - *Crisp at 16:* put the centre line of long straight strokes (the silhouette's main horizontals and verticals) on 0.75 + 1.5k: 0.75, 2.25, 3.75, 5.25, 6.75, 8.25, 9.75, 11.25, 12.75, 14.25, 15.75, 17.25, 18.75, 20.25, 21.75, 23.25. These are on the snap grid, and both edges of the line land on whole pixels at 16, 32 and 48 px (sharp 1, 2 and 3 px lines). Small details and curves may use any snap point.
+    - *Readable at 16:* the detail budget (rule 5) is set for 16 px: a 1.5 gap is 1 px there. If something merges or blurs at 16, simplify the one master; that fix shows at every size.
+    For a stroke other than 1.5, the 16 px stroke is ⅔ of it; check the 16 px render instead of the line table above. *Fails:* a separate 16 px set that no longer looks like the 24 px one, or a 16 px burger whose buns blur because their edges sit on .25.
 
 ## 4 · The rules file
 `rules.json` is the single source of truth. Example (defaults):
@@ -72,21 +74,12 @@ Deliver nothing below this.
   "perspective": "front/side",
   "detail": { "maxElements": 8, "minGap": 1.5, "minCounter": 2 },
   "allowText": false,
-  "notes": ["Anything the user stated that isn't a number, verbatim"],
-  "small": {
-    "grid": 16, "padding": 1, "snap": 0.5,
-    "stroke": { "width": [1] },
-    "corner": { "outer": 1.5, "inner": 0.5 },
-    "keylines": { "circle": 14, "square": 12, "portrait": [10, 14], "landscape": [14, 10] },
-    "detail": { "maxElements": 5, "minGap": 1, "minCounter": 1.5 }
-  }
+  "notes": ["Anything the user stated that isn't a number, verbatim"]
 }
 ```
 For a coloured palette, also add `"paletteFamilies": { "family name": ["#hex", …] }` so the preview page can show grouped chips.
 
-`small` holds only what changes at 16 px; everything else (palette, caps, joins, style, perspective, allowText) is inherited from the master rules. Defaults above are for a 1.5-stroke outline set; derive them for other styles: stroke ≈ ⅔ of the master stroke rounded to a whole or half pixel (never below 1), radii ≈ ⅔ rounded to .5, `snap` .5, `maxElements` ≈ ⅔ of the master's. For filled sets drop `stroke` and keep `minGap ≥ 1`. Omit `small` entirely if the user turned the variant off.
-
-Write a matching `RULES.md` for humans: each rule in one line, a **16 px** section listing the `small` values, plus a **Do-not-copy list** of what each reference depicts. After the anchors pass (5c), mark the rules **locked**. Any later change bumps `version` and triggers a full re-check.
+Write a matching `RULES.md` for humans: each rule in one line (including how it renders at 16 px: "1.5 stroke → 1 px at 16"), plus a **Do-not-copy list** of what each reference depicts. After the anchors pass (5c), mark the rules **locked**. Any later change bumps `version` and triggers a full re-check.
 
 ## 5 · Workflow
 
@@ -94,10 +87,10 @@ Write a matching `RULES.md` for humans: each rule in one line, a **16 px** secti
 
 **b. Plan the set → `ICONS.md`.** One row per icon: name (kebab-case), metaphor in one phrase, view, keyline shape, risk (e.g. "confusable with X", "too detailed"). Show the user the table if the set is new; continue unless they asked to approve first.
 
-**c. Anchors (Gate A).** Draw 4 icons that span the hardest shapes: one round, one tall, one wide/layered, one small symbolic mark, then their 16 px versions (5d-2). Lint both sizes, render the sheets and the pair sheet (5e), and pass every check:
-- each reads as its object at 24 px and in silhouette at 16 px;
-- each 16 px version is sharp at 1×, reads as the same object as its master, and needed no rule bending;
-- all four have equal optical weight and size (at 24, and separately at 16);
+**c. Anchors (Gate A).** Draw 4 icons that span the hardest shapes: one round, one tall, one wide/layered, one small symbolic mark. Lint them, render the sheet (5e), and pass every check:
+- each reads as its object at 24 px and at 16 px, and in silhouette at 16 px;
+- at true 16 px the main straight edges are sharp and no details have merged (rule 13);
+- all four have equal optical weight and size;
 - the style matches the refs, nothing from the Do-not-copy list appears;
 - nothing breaks a rule; no rule needed bending.
 
@@ -114,26 +107,13 @@ Show the user the anchors in the destination they chose (5f-2). Adjust rules fro
 - Prefer primitives (`circle`, `rect` with `rx`, `line`) where they're exact; paths otherwise, absolute coordinates, arcs for round corners at the rule's radius.
 - Sketch the construction first in a comment-free mental pass: keyline, main silhouette, then at most the detail budget. Build shades and segments from the silhouette's own edges (rule 12): split the outline at seam points rather than stacking loose shapes.
 - Draw in batches of 6–8, then lint and review that batch before the next. Batches are a working rhythm only; they never appear on the preview page.
-
-**d-2. Draw the 16 px variant.** Once a batch passes Gate B at 24, draw its 16 px versions into `icons-16/` with the **same file names**, on `viewBox="0 0 16 16"`, `width="16" height="16"`, using only the `small` rules (rule 13). For each icon:
-1. Lay the master's silhouette onto the 16 grid (⅔ scale) as a guide, then redraw every edge on the small snap. Don't keep scaled coordinates.
-2. Remove detail in this order until it fits `small.detail`: textures and decorative lines, then secondary parts, then inner shades. Merge parts that would sit closer than `minGap`.
-3. Exaggerate what makes the object recognisable (a slightly bigger handle, a wider gap) rather than shrinking it evenly.
-4. Keep its keyline shape: the 16 icon fills the same `small.keylines` shape as the master fills its own.
-Then lint with `--small`, render the 16 sheet and the pair sheet, and fix before the next batch.
-
 **e. Check tools** (write once per project). Needs Node and `npm i @resvg/resvg-js` (no browser).
 
 `lint.mjs`: mechanical rule check.
 ```js
-// node lint.mjs icons rules.json              (24 px masters)
-// node lint.mjs icons-16 rules.json --small   (16 px variant; also checks each one against its master)
+// node lint.mjs icons rules.json
 import fs from 'fs'; import path from 'path';
-const [dir, rp = 'rules.json', flag] = process.argv.slice(2), R0 = JSON.parse(fs.readFileSync(rp, 'utf8'));
-const small = flag === '--small', S = R0.small || {};
-const R = small ? { ...R0, ...S, stroke: { ...R0.stroke, ...S.stroke }, detail: { ...R0.detail, ...S.detail } } : R0;
-const masterDir = path.join(dir, '..', 'icons');
-const count = s => (s.replace(/<svg\b[^>]*>/, '').match(/<(path|circle|rect|line|polyline|polygon|ellipse)\b/g) || []).length;
+const [dir, rp = 'rules.json'] = process.argv.slice(2), R = JSON.parse(fs.readFileSync(rp, 'utf8'));
 const pal = new Set([...R.palette.map(c => c.toLowerCase()), 'none']);
 const onGrid = n => Math.abs(n / R.snap - Math.round(n / R.snap)) < 1e-6;
 let bad = 0;
@@ -152,22 +132,16 @@ for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.svg')).sort()) {
   if (off.length) e.push(`off-grid: ${off.slice(0, 5).join(', ')}`);
   const n = (body.match(/<(path|circle|rect|line|polyline|polygon|ellipse)\b/g) || []).length;
   if (n > R.detail.maxElements) e.push(`${n} elements > ${R.detail.maxElements}`);
-  if (small) { const m = path.join(masterDir, f);
-    if (!fs.existsSync(m)) e.push('no 24 px master'); else if (n > count(fs.readFileSync(m, 'utf8'))) e.push('more shapes than its master'); }
   console.log(e.length ? `✗ ${f}: ${e.join('; ')}` : `✓ ${f}`); bad += e.length > 0;
 }
-if (small && fs.existsSync(masterDir)) for (const f of fs.readdirSync(masterDir).filter(f => f.endsWith('.svg')))
-  if (!fs.existsSync(path.join(dir, f))) { console.log(`✗ ${f}: no 16 px version`); bad++; }
 console.log(`${bad} failing`); process.exit(bad ? 1 : 0);
 ```
 
 `sheet.mjs`: contact sheet with keyline overlay and real-size previews.
 ```js
 // node sheet.mjs icons rules.json sheet.png [--dark] [--silhouette]
-// node sheet.mjs icons-16 rules.json sheet-16.png --small [--dark] [--silhouette]
 import { Resvg } from '@resvg/resvg-js'; import fs from 'fs'; import path from 'path';
-const [dir, rp, out, ...flags] = process.argv.slice(2), R0 = JSON.parse(fs.readFileSync(rp, 'utf8'));
-const sm = flags.includes('--small'), R = sm ? { ...R0, ...R0.small } : R0, G = R.grid;
+const [dir, rp, out, ...flags] = process.argv.slice(2), R = JSON.parse(fs.readFileSync(rp, 'utf8')), G = R.grid;
 const dark = flags.includes('--dark'), sil = flags.includes('--silhouette');
 const bg = dark ? '#121212' : '#ffffff', fg = dark ? '#f2f2f2' : '#111111';
 const files = fs.readdirSync(dir).filter(f => f.endsWith('.svg')).sort();
@@ -180,29 +154,12 @@ const keys = (x, y, s) => { const u = s / G, p = R.padding * u; let g = '';
     + `<circle cx="${x + s / 2}" cy="${y + s / 2}" r="${R.keylines.circle / 2 * u}" fill="none" stroke="#3b82f6" stroke-opacity=".4"/>`; };
 const C = 8, cw = 124, ch = 112; let body = '';
 files.forEach((f, i) => { const x = (i % C) * cw + 12, y = Math.floor(i / C) * ch + 12;
-  body += keys(x, y, 72) + place(f, x, y, 72) + (sm ? place(f, x + 82, y, 32) + place(f, x + 86, y + 42, 16) : place(f, x + 82, y + 6, 24) + place(f, x + 86, y + 42, 16))
+  body += keys(x, y, 72) + place(f, x, y, 72) + place(f, x + 82, y + 6, 24) + place(f, x + 86, y + 42, 16)
     + `<text x="${x}" y="${y + 90}" font-size="11" font-family="sans-serif" fill="${fg}" fill-opacity=".6">${f.slice(0, -4)}</text>`; });
 const W = C * cw + 12, H = Math.ceil(files.length / C) * ch + 12;
 fs.writeFileSync(out, new Resvg(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="100%" height="100%" fill="${bg}"/>${body}</svg>`).render().asPng());
 ```
-Each cell: the icon at 72 px over its grid, padding box (red) and circle keyline (blue), plus true-size renders (24 and 16 px for masters; 32 and 16 px with `--small`, where the 16 is the one that must be sharp).
-
-`pair.mjs`: each 16 px icon next to its master, to check they are the same object at the same weight.
-```js
-// node pair.mjs icons icons-16 pairs.png
-import { Resvg } from '@resvg/resvg-js'; import fs from 'fs'; import path from 'path';
-const [a, b, out] = process.argv.slice(2);
-const files = fs.readdirSync(a).filter(f => f.endsWith('.svg') && fs.existsSync(path.join(b, f))).sort();
-const put = (d, f, x, y, s) => fs.readFileSync(path.join(d, f), 'utf8').replace(/<\?xml[^>]*>/, '')
-  .replace(/<svg\b([^>]*)>/, (m, at) => `<svg${at.replace(/\s(width|height|x|y|color)="[^"]*"/g, '')} x="${x}" y="${y}" width="${s}" height="${s}" color="#111111">`);
-const C = 4, cw = 248, ch = 104; let body = '';
-files.forEach((f, i) => { const x = (i % C) * cw + 12, y = Math.floor(i / C) * ch + 12;
-  body += put(a, f, x, y, 72) + put(b, f, x + 80, y, 72) + put(a, f, x + 166, y + 24, 24) + put(b, f, x + 200, y + 28, 16)
-    + `<text x="${x}" y="${y + 88}" font-size="11" font-family="sans-serif" fill="#111" fill-opacity=".6">${f.slice(0, -4)} · 24 | 16</text>`; });
-const W = C * cw + 12, H = Math.ceil(files.length / C) * ch + 12;
-fs.writeFileSync(out, new Resvg(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="100%" height="100%" fill="#fff"/>${body}</svg>`).render().asPng());
-```
-Each cell: master and 16 px version blown up to the same 72 px box (same metaphor and silhouette?), then both at true size (same weight?). Use `--silhouette` for rule 10 (filled outlines only approximate it; judge the shape, not the fill). For rule 12, also render each new icon alone at ~300 px and inspect every seam and shade.
+Each cell: the icon at 72 px over its grid, padding box (red) and circle keyline (blue), plus true 24 px and 16 px renders. The 16 px render is the same SVG scaled down: it is what every 16 px use will look like, so judge it as seriously as the 72 px view. Use `--silhouette` for rule 10 (filled outlines only approximate it; judge the shape, not the fill). For rule 12, also render each new icon alone at ~300 px and inspect every seam and shade.
 
 If `npm` is unavailable, use `rsvg-convert` or Python `cairosvg` for the same renders.
 
@@ -213,10 +170,7 @@ If `npm` is unavailable, use `rsvg-convert` or Python `cairosvg` for the same re
 - no detail fills in, nothing touches the padding box unless its keyline says so;
 - every layer follows the object's edges (rule 12); simplify anything that looks assembled from loose parts.
 
-For the 16 px variant, do the same with `--small` (light, dark, silhouette), then the pair sheet:
-- every 16 px icon is crisp at true 16 (no grey half-pixel edges on straight lines);
-- it reads as the same object as its master, and nothing in it is new;
-- the 16 px icons match each other in weight; a 16 icon may look slightly bolder than its scaled master, never lighter.
+- at true 16 px: main straight edges sharp, no gaps closed up, weight still even across the row. If an icon fails only at 16, simplify or re-snap the master (rule 13); never add a separate 16 px file.
 
 Fix, re-lint, re-render only the changed icons' batch.
 
@@ -227,30 +181,27 @@ Fix, re-lint, re-render only the changed icons' batch.
 *Figma* (through the user's linked computer and the Figma tools):
 - Check Figma is open and connected first (status tool). If it isn't reachable, say so, ask the user to open Figma with the plugin running, and carry on with the preview page.
 - Ask which file and page to use if the user hasn't said; never write into a file they didn't name.
-- Create one frame per category, named `Icons / <set name> / <Category>`. Add each icon with `figma.createNodeFromSvg(svg)`, resize to the grid, turn it into a component named `icon/<name>`, and lay components out on a 48 px grid with their names. Keep the stroke as a stroke (don't outline), so it stays editable.
-- With a 16 px variant, make both sizes components (`Size=24`, `Size=16`, the 16 one from `icons-16/` at 16 × 16) and combine them with `figma.combineAsVariants` into one component set named `icon/<name>`.
-- Updates replace only the changed components (find by name, swap contents). Never delete or rename layers the user made.
+- Create one frame per category, named `Icons / <set name> / <Category>`. Add each icon with `figma.createNodeFromSvg(svg)`, resize to the grid, turn it into a component named `icon/<name>`, and lay components out on a 48 px grid with their names. Keep the stroke as a stroke (don't outline), so it stays editable.- Updates replace only the changed components (find by name, swap contents). Never delete or rename layers the user made.
 - Screenshot the frame after each push and check it matches the preview.
 
 **g. Export and deliver.**
 ```js
-// node export.mjs icons png 24 48 96     → png/<name>@<size>.png  (24 px masters)
-// node export.mjs icons-16 png 16 32     → png/<name>@16.png, @32.png  (16 px variant)
+// node export.mjs icons png 16 24 32 48 96  → png/<name>@<size>.png  (every size from the same SVG)
 import { Resvg } from '@resvg/resvg-js'; import fs from 'fs'; import path from 'path';
 const [dir, out, ...sizes] = process.argv.slice(2); fs.mkdirSync(out, { recursive: true });
 for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.svg'))) for (const s of sizes)
   fs.writeFileSync(path.join(out, `${f.slice(0, -4)}@${s}.png`), new Resvg(fs.readFileSync(path.join(dir, f), 'utf8').replace('currentColor', '#111111'), { fitTo: { mode: 'width', value: +s } }).render().asPng());
 ```
-Package `icons/` (24 px SVG), `icons-16/` (16 px SVG), `png/`, `sheet.png`, `sheet-dark.png`, `sheet-16.png`, `pairs.png`, `rules.json`, `RULES.md`, `ICONS.md` into one zip. Send the sheet and the zip, and do a final update of the preview page and/or Figma frame (whichever the user chose). Summarise: the rules in a few lines, the metaphor choice for any non-obvious icon, anything you'd still flag, that you couldn't check real-screen rendering, and 2–3 easy next steps.
+Package `icons/` (SVG), `png/`, `sheet.png`, `sheet-dark.png`, `rules.json`, `RULES.md`, `ICONS.md` into one zip. Send the sheet and the zip, and do a final update of the preview page and/or Figma frame (whichever the user chose). Summarise: the rules in a few lines, the metaphor choice for any non-obvious icon, anything you'd still flag, that you couldn't check real-screen rendering, and 2–3 easy next steps.
 
-**h. Revisions.** Change only what the user named; don't redraw icons they didn't mention. A change to a master means redrawing its 16 px version too (and the reverse only if the 16 px change exposes a problem in the master). If the feedback is really about a rule ("everything feels heavy"), propose the rule change, and on a yes update `rules.json`, bump the version, re-lint the whole set and list every icon that changed.
+**h. Revisions.** Change only what the user named; don't redraw icons they didn't mention. If the feedback is really about a rule ("everything feels heavy"), propose the rule change, and on a yes update `rules.json`, bump the version, re-lint the whole set and list every icon that changed.
 
 ## 6 · Keep it lean
 - Anchors before the set. Batches of 6–8, reviewed on one sheet each, not icon by icon.
 - Re-render only what changed; the full sheet once per batch and once at the end.
 - Edit SVGs in place instead of rewriting them; don't re-read files you just wrote.
 - Use what's installed; the only package needed is `@resvg/resvg-js`.
-- One-line progress notes; expect ~5–10 minutes per batch of 8, plus about as much again for its 16 px versions.
+- One-line progress notes; expect ~5–10 minutes per batch of 8.
 
 ## 7 · Preview page (fixed house style)
 
@@ -265,7 +216,7 @@ The reference is the **Restaurant Folk Icons** preview page. Every icon-studio p
 6. **This layout is the only format** for anything generated with this skill, whatever the theme or palette.
 7. **Group icons by category, never by batch.** Use the category the user names (e.g. Food, Travel); if none is named, the theme is the single category. Drawing batches never appear on the page.
 8. **Every icon renders complete.** Embedding an icon must never drop or alter any of its parts; the page shows exactly what the SVG file contains.
-9. **Both sizes on one page.** If the set has a 16 px variant, a "24 px / 16 px" switch in the sticky bar swaps every card (and its copy buttons and "Copy all") to that size. The page is never split into separate 24 and 16 sections.
+9. **One set, every size.** There is no size switch and no separate 16 px set. The size slider goes down to 16 px so the same icons can be seen at true small size, with the stroke scaling naturally.
 10. **"Copy all" for Figma.** The sticky bar has a "Copy all" button that copies every icon as one SVG. Pasted into Figma, it lands as a grid of frames, one per icon (named after the icon), **8 per row**, with a **10 px gap on all sides of every frame** (10 px between frames and 10 px around the outer edge).
 
 ### 7.2 Exact visual spec (what the script produces)
@@ -281,7 +232,6 @@ The reference is the **Restaurant Folk Icons** preview page. Every icon-studio p
 | Sticky bar | `position: sticky; top: 10px` (+ safe-area), centred, radius 999px, padding `8px 10px 8px 18px`, background `rgba(255,255,255,.86)` + `backdrop-filter: blur(14px)`, shadow `0 6px 24px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.05)`, no border; items gap 8px × 16px |
 | Size control | label "Size" 12px/600; range 16–200, default 128, width 130px, accent = ink; readout "128 px" 12px muted tabular-nums, 44px wide |
 | Background picker | segmented: track `#ececec`, radius 999px, padding 3px, gap 2px; buttons 12px/600, padding 5px 11px, muted text; selected = white thumb, ink text, shadow `0 1px 3px rgba(0,0,0,.12)`; each button has a 10px colour dot. Options: Grey (card default), White, the set's intended ground if any (e.g. Cream `#f4eedc`), Black `#1c1c1c` |
-| Grid switch | only when the set has a 16 px variant, right after the size control: segmented control in the same style as the background picker (no dots), buttons "24 px" (default) and "16 px". 16 px swaps every card's icon, its footer meta ("name.svg · 16 px · N shapes"), its Copy buttons and "Copy all" to the `icons-16/` files; the padding overlay uses the 16 grid's live area; toasts add "· 16 px" |
 | Toggles | "Padding" and "Silhouette" pills: off = `#ececec` fill, muted text; on = ink fill, white text |
 | Copy all | last item in the sticky bar: an ink-filled pill (white text, 12px/600, padding 5px 11px, no border). It copies one combined SVG to the clipboard and the toast says "Copied N icons. Paste into Figma" |
 | Copy all SVG | outer `<svg>` sized to the grid, `color="#111111"` so `currentColor` resolves; each icon is a nested `<svg id="name">` (Figma imports each as a frame named after the icon) at the icon's native grid size (or `figmaFrame` from the config), keeping its own viewBox and every attribute and child unchanged. 8 columns; frame at column c, row r sits at x = 10 + c·(size + 10), y = 10 + r·(size + 10); sheet width = 10 + min(N, 8)·(size + 10), height = 10 + rows·(size + 10). Icons in page order (categories in config order) |
@@ -328,12 +278,11 @@ The reference is the **Restaurant Folk Icons** preview page. Every icon-studio p
 - `brandIcon` / `heroIcon`: two different icons from the set (file names without `.svg`).
 - `ground`: the background the set is designed for, if any; omit it for none. It becomes the third background option.
 - `categories`: in the user's order; every icon listed once with its display label and keyline.
-- `rules`: one card per rule, `[label, one plain sentence]`, from `RULES.md`. With a 16 px variant, include one card for it (e.g. `["16 px", "Redrawn on a 16 grid with a 1 px stroke; five shapes at most."]`).
-- `downloadHref` (optional): only for hosting outside the artifact (e.g. GitHub Pages), the zip's file name; adds a "Download all" pill.
+- `rules`: one card per rule, `[label, one plain sentence]`, from `RULES.md`.- `downloadHref` (optional): only for hosting outside the artifact (e.g. GitHub Pages), the zip's file name; adds a "Download all" pill.
 - `figmaFrame` (optional): frame size in px for "Copy all" (e.g. 48). Defaults to the rules grid (24). The 10 px gap and 8 columns are fixed.
 
 ### 7.4 `build-preview.mjs` (copy verbatim)
-If `rules.json` has a `small` block, the script also reads `icons-16/` and stops with a list of any icon missing its 16 px version. Run `node build-preview.mjs` for the artifact (`preview.html`, publish it with the Artifact tool), or `node build-preview.mjs site/index.html` for a standalone full HTML document.
+Run `node build-preview.mjs` for the artifact (`preview.html`, publish it with the Artifact tool), or `node build-preview.mjs site/index.html` for a standalone full HTML document.
 ```js
 // node build-preview.mjs → preview.html  (reads preview.config.json + rules.json, inlines every SVG from icons/)
 import fs from 'fs';
@@ -346,25 +295,15 @@ const readSvg = n => fs.readFileSync(`icons/${n}.svg`, 'utf8').trim().replace(/<
 const bare = svg => svg.replace(/<svg\b[^>]*>/, tag => tag.replace(/\s(width|height)="[^"]*"/g, ''));
 const sized = (svg, px) => bare(svg).replace(/<svg\b/, `<svg width="${px}" height="${px}" aria-hidden="true"`);
 const total = C.categories.reduce((a, c) => a + c.icons.length, 0);
-// 16 px variant: hand-drawn files in icons-16/, same names; only when rules.json has a "small" block
-const SM = R.small ? { G: R.small.grid, P: R.small.padding ?? 0 } : null;
-const read16 = n => fs.readFileSync(`icons-16/${n}.svg`, 'utf8').trim().replace(/<\?xml[^>]*>\s*/, '');
-if (SM) {
-  const miss = C.categories.flatMap(c => c.icons).filter(ic => !fs.existsSync(`icons-16/${ic.file}.svg`)).map(ic => ic.file);
-  if (miss.length) { console.error('Missing 16 px versions in icons-16/: ' + miss.join(', ')); process.exit(1); }
-}
-const count = s => (s.match(/<(path|circle|rect|ellipse|line|polyline|polygon)\b/g) || []).length;
 
 const card = (ic, cat) => {
-  const raw = readSvg(ic.file), svg = bare(raw), raw16 = SM ? read16(ic.file) : '';
-  const art = SM ? `<span class="v v24">${svg}</span><span class="v v16">${bare(raw16)}</span>` : svg;
-  const meta = SM ? `<span class="v24">${ic.file}.svg · ${count(svg)} shapes</span><span class="v16">${ic.file}.svg · 16 px · ${count(raw16)} shapes</span>`
-    : `${ic.file}.svg · ${count(svg)} shapes`;
+  const raw = readSvg(ic.file), svg = bare(raw);
+  const shapes = (svg.match(/<(path|circle|rect|ellipse|line|polyline|polygon)\b/g) || []).length;
   return `<figure class="card" data-name="${ic.file}">
   <figcaption><span class="kick">${esc(cat)} · ${esc(ic.keyline)}</span><span class="nm">${esc(ic.label)}</span></figcaption>
-  <button class="art" type="button" aria-label="Copy ${esc(ic.label)} SVG" data-copy="${ic.file}">${art}<span class="pad" aria-hidden="true"></span></button>
-  <div class="foot"><span class="mt">${meta}</span><button class="plus" type="button" data-copy="${ic.file}" aria-label="Copy ${esc(ic.label)} SVG code">Copy</button></div>
-  <template id="src-${ic.file}">${raw}</template>${SM ? `<template id="src-${ic.file}--16">${raw16}</template>` : ''}
+  <button class="art" type="button" aria-label="Copy ${esc(ic.label)} SVG" data-copy="${ic.file}">${svg}<span class="pad" aria-hidden="true"></span></button>
+  <div class="foot"><span class="mt">${ic.file}.svg · ${shapes} shapes</span><button class="plus" type="button" data-copy="${ic.file}" aria-label="Copy ${esc(ic.label)} SVG code">Copy</button></div>
+  <template id="src-${ic.file}">${raw}</template>
 </figure>`;
 };
 const sections = C.categories.map(c => `<section class="cat" aria-label="${esc(c.name)}">
@@ -395,8 +334,7 @@ const sheetSvg = (read, fs_) => {
       `<svg id="${ic.file}"${a.replace(/\s(xmlns|id|x|y)="[^"]*"/g, '')} x="${x}" y="${y}" width="${fs_}" height="${fs_}">`);
   }).join('\n') + '\n</svg>';
 };
-const allSvg = sheetSvg(readSvg, FS), allSvg16 = SM ? sheetSvg(read16, SM.G) : '';
-const padRatio16 = SM ? ((SM.G - 2 * SM.P) / SM.G).toFixed(4) : padRatio;
+const allSvg = sheetSvg(readSvg, FS);
 
 const html = `<title>${esc(C.title)}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -455,9 +393,7 @@ h1{margin:6px 0 0;font-size:clamp(28px,4.2vw,40px);font-weight:700;letter-spacin
 .art:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .art svg{width:var(--size,${defSize}px);height:var(--size,${defSize}px);max-width:100%;max-height:100%;transition:transform .25s}
 .card:hover .art svg{transform:translateY(-3px) scale(1.03)}
-.cats{--pr:${padRatio}}.cats.s16{--pr:${padRatio16}}
-.art .v{display:contents}.cats .v16{display:none}.cats.s16 .v16{display:contents}.cats.s16 .v24{display:none}
-.pad{position:absolute;left:50%;top:50%;width:calc(var(--size,${defSize}px)*var(--pr));height:calc(var(--size,${defSize}px)*var(--pr));transform:translate(-50%,-50%);outline:1.5px dashed var(--muted);border-radius:2px;opacity:0;pointer-events:none}
+.pad{position:absolute;left:50%;top:50%;width:calc(var(--size,${defSize}px)*${padRatio});height:calc(var(--size,${defSize}px)*${padRatio});transform:translate(-50%,-50%);outline:1.5px dashed var(--muted);border-radius:2px;opacity:0;pointer-events:none}
 .show-pad .pad{opacity:.55}
 .sil .art svg *{fill:var(--ink);stroke:var(--ink);fill-opacity:1}
 .foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -484,17 +420,14 @@ h1{margin:6px 0 0;font-size:clamp(28px,4.2vw,40px);font-weight:700;letter-spacin
     ${palette}
   </header>
   <div class="bar" role="toolbar" aria-label="View controls">
-    <label for="size">Size <input id="size" type="range" min="16" max="200" value="${defSize}"><span class="sz" id="szv">${defSize} px</span></label>
-    ${SM ? `<div class="seg" id="gridseg" role="group" aria-label="Icon grid"><button type="button" data-v="" aria-pressed="true">24 px</button><button type="button" data-v="s16" aria-pressed="false">16 px</button></div>` : ''}
-    <div class="seg" id="bgseg" role="group" aria-label="Card background">
+    <label for="size">Size <input id="size" type="range" min="16" max="200" value="${defSize}"><span class="sz" id="szv">${defSize} px</span></label>    <div class="seg" id="bgseg" role="group" aria-label="Card background">
       ${bgButtons}
     </div>
     <button type="button" class="tog" id="pad" aria-pressed="false">Padding</button>
     <button type="button" class="tog" id="silh" aria-pressed="false">Silhouette</button>
     <button type="button" class="cpall" data-copy="__all" aria-label="Copy all ${total} icons as one SVG for Figma">Copy all</button>
   </div>
-  <template id="src-__all">${allSvg}</template>${SM ? `<template id="src-__all--16">${allSvg16}</template>` : ''}
-  <div id="grid" class="cats">
+  <template id="src-__all">${allSvg}</template>  <div id="grid" class="cats">
 ${sections}
   </div>
   <section class="rh" aria-label="Rules"><span class="kick">Locked rules</span><h2>How every icon is built</h2></section>
@@ -507,9 +440,6 @@ ${sections}
 const grid=document.getElementById('grid');
 const size=document.getElementById('size'), szv=document.getElementById('szv');
 size.addEventListener('input',()=>{grid.style.setProperty('--size',size.value+'px');szv.textContent=size.value+' px'});
-const gs=document.getElementById('gridseg');
-if(gs)gs.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
-  gs.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));grid.classList.toggle('s16',!!b.dataset.v)}));
 document.querySelectorAll('#bgseg button').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('#bgseg button').forEach(x=>x.setAttribute('aria-pressed',x===b));
   b.dataset.bg?grid.style.setProperty('--tilebg',b.dataset.bg):grid.style.removeProperty('--tilebg');
@@ -519,8 +449,8 @@ tog('pad','show-pad');tog('silh','sil');
 const toast=document.getElementById('toast');let t;
 function say(m){toast.textContent=m;toast.hidden=false;clearTimeout(t);t=setTimeout(()=>toast.hidden=true,1600)}
 document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{
-  const s16=grid.classList.contains('s16'), n=b.dataset.copy, src=document.getElementById('src-'+n+(s16?'--16':'')).innerHTML.trim();
-  const msg=(n==='__all'?'Copied ${total} icons':'Copied '+n+'.svg')+(s16?' · 16 px':'')+(n==='__all'?'. Paste into Figma':'');
+  const n=b.dataset.copy, src=document.getElementById('src-'+n).innerHTML.trim();
+  const msg=n==='__all'?'Copied ${total} icons. Paste into Figma':'Copied '+n+'.svg';
   try{await navigator.clipboard.writeText(src);say(msg)}
   catch(e){const ta=document.createElement('textarea');ta.value=src;document.body.appendChild(ta);ta.select();
     try{document.execCommand('copy');say(msg)}catch(_){say('Copy is blocked here. Use the SVG from the zip.')}ta.remove()}
@@ -538,5 +468,4 @@ console.log(out, (html.length / 1024).toFixed(1) + ' KB');
 ### 7.5 Self-check before publishing
 1. **Completeness:** for every icon, count `<rect`, `<circle`, `<ellipse` and `<path` in the SVG file and in its card on the generated page; the counts must match, and each `<rect>` on the page must still have its `width` and `height`. Then render 4–6 icons exactly as embedded in the page (e.g. with resvg) and look at them.
 2. **Copy:** every card has a real `<button class="plus" data-copy>`; its `<template>` holds the original file text. The bar has the "Copy all" button, and `template#src-__all` holds one nested `<svg id>` per icon (count equals the icon total), 8 per row, with a 10 px gap. Render that combined SVG once (e.g. with resvg) and check the grid and that every icon is complete.
-4. **16 px variant** (if `small` is set): every card has both `.v24` and `.v16` art and a `src-<name>--16` template holding the original `icons-16/` file; `src-__all--16` has one 16 × 16 frame per icon; the "24 px / 16 px" switch is in the bar. Lint `--small` passes with 0 failing.
-3. **Style:** read the page against 7.1 and 7.2: any beige or tinted grey in the page chrome, any font other than Open Sans, any border or divider used for structure, a control bar that isn't sticky, the word "Batch" anywhere, or any CSS that differs from the script means it is not done. Regenerate from the script instead of patching the HTML by hand.
+4. **16 px:** drag the slider to 16 and look at every card: same icons, stroke scaled down, main straight edges sharp.3. **Style:** read the page against 7.1 and 7.2: any beige or tinted grey in the page chrome, any font other than Open Sans, any border or divider used for structure, a control bar that isn't sticky, the word "Batch" anywhere, or any CSS that differs from the script means it is not done. Regenerate from the script instead of patching the HTML by hand.

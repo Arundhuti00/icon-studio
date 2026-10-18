@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Restaurant Folk Icons</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +17,7 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ground:#0e0f0f;--sheet:#1a1a1a;--card:#232323;--ink:#f2f2f2;--muted:#9a9a9a;--soft:#2c2c2c;--bar:rgba(26,26,26,.86);--thumb:#3a3a3a;--focus:#f2f2f2;color-scheme:dark}}
 :root[data-theme="dark"]{--ground:#0e0f0f;--sheet:#1a1a1a;--card:#232323;--ink:#f2f2f2;--muted:#9a9a9a;--soft:#2c2c2c;--bar:rgba(26,26,26,.86);--thumb:#3a3a3a;--focus:#f2f2f2;color-scheme:dark}
 *{box-sizing:border-box}
+html,body{margin:0}
 body{background:var(--ground);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:clamp(16px,5vw,56px)}
 button,input{font-family:inherit}
@@ -74,6 +79,9 @@ h1{margin:6px 0 0;font-size:clamp(28px,4.2vw,40px);font-weight:700;letter-spacin
 @media (max-width:560px){.bar{border-radius:22px;padding:10px 12px}.navr .count{display:none}}
 @media (prefers-reduced-motion:reduce){.art svg,.card,.plus{transition:none}.card:hover .art svg{transform:none}}
 </style>
+</head>
+<body>
+
 <main class="sheet">
   <nav class="nav"><div class="brand"><svg width="30" height="30" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <ellipse cx="32" cy="51.5" rx="24" ry="3.5" fill="#b81f63"/>
@@ -98,8 +106,7 @@ h1{margin:6px 0 0;font-size:clamp(28px,4.2vw,40px);font-weight:700;letter-spacin
     <div class="palette" aria-label="Palette"><div class="fam" title="maroon/crimson"><div class="chips"><span class="chip" style="--c:#5e0b26" title="#5e0b26"></span><span class="chip" style="--c:#a2032d" title="#a2032d"></span><span class="chip" style="--c:#d5003b" title="#d5003b"></span><span class="chip" style="--c:#fe6e5e" title="#fe6e5e"></span></div><span class="fl">maroon/crimson</span></div><div class="fam" title="pink"><div class="chips"><span class="chip" style="--c:#b81f63" title="#b81f63"></span><span class="chip" style="--c:#f0549a" title="#f0549a"></span><span class="chip" style="--c:#f7a8c2" title="#f7a8c2"></span></div><span class="fl">pink</span></div><div class="fam" title="tangerine/peach"><div class="chips"><span class="chip" style="--c:#c43d0e" title="#c43d0e"></span><span class="chip" style="--c:#f5571c" title="#f5571c"></span><span class="chip" style="--c:#ff8a3d" title="#ff8a3d"></span><span class="chip" style="--c:#f8c9a0" title="#f8c9a0"></span></div><span class="fl">tangerine/peach</span></div><div class="fam" title="mustard ochre"><div class="chips"><span class="chip" style="--c:#b97a17" title="#b97a17"></span><span class="chip" style="--c:#e3a12f" title="#e3a12f"></span><span class="chip" style="--c:#f2c75c" title="#f2c75c"></span></div><span class="fl">mustard ochre</span></div><div class="fam" title="olive/chartreuse"><div class="chips"><span class="chip" style="--c:#4f5e1d" title="#4f5e1d"></span><span class="chip" style="--c:#7c8a24" title="#7c8a24"></span><span class="chip" style="--c:#d4e030" title="#d4e030"></span><span class="chip" style="--c:#ecf38a" title="#ecf38a"></span></div><span class="fl">olive/chartreuse</span></div><div class="fam" title="cream highlight"><div class="chips"><span class="chip" style="--c:#fdf8ea" title="#fdf8ea"></span></div><span class="fl">cream highlight</span></div></div>
   </header>
   <div class="bar" role="toolbar" aria-label="View controls">
-    <label for="size">Size <input id="size" type="range" min="24" max="200" value="128"><span class="sz" id="szv">128 px</span></label>
-    <div class="seg" role="group" aria-label="Card background">
+    <label for="size">Size <input id="size" type="range" min="16" max="200" value="128"><span class="sz" id="szv">128 px</span></label>    <div class="seg" id="bgseg" role="group" aria-label="Card background">
       <button type="button" data-bg="" aria-pressed="true"><span class="dot" style="--sw:#f5f5f5"></span>Grey</button>
       <button type="button" data-bg="#ffffff" aria-pressed="false"><span class="dot" style="--sw:#ffffff"></span>White</button>
       <button type="button" data-bg="#f4eedc" aria-pressed="false"><span class="dot" style="--sw:#f4eedc"></span>Cream</button>
@@ -1167,8 +1174,7 @@ h1{margin:6px 0 0;font-size:clamp(28px,4.2vw,40px);font-weight:700;letter-spacin
   <path d="M23 25 Q23 14 32 14 Q41 14 41 22.5 Q41 28 36 31 Q34.5 32 34.5 34 L34.5 37 L29.5 37 L29.5 33.5 Q29.5 29.5 33 27.5 Q36 26 36 22.5 Q36 19 32 19 Q28 19 28 25Z" fill="#fdf8ea"/>
   <circle cx="32" cy="44" r="3.5" fill="#fdf8ea"/>
 </svg>
-</svg></template>
-  <div id="grid" class="cats">
+</svg></template>  <div id="grid" class="cats">
 <section class="cat" aria-label="Food">
   <div class="ch"><span class="kick">45 icons</span><h2>Food</h2></div>
   <div class="grid"><figure class="card" data-name="burger">
@@ -3841,8 +3847,8 @@ h1{margin:6px 0 0;font-size:clamp(28px,4.2vw,40px);font-weight:700;letter-spacin
 const grid=document.getElementById('grid');
 const size=document.getElementById('size'), szv=document.getElementById('szv');
 size.addEventListener('input',()=>{grid.style.setProperty('--size',size.value+'px');szv.textContent=size.value+' px'});
-document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+document.querySelectorAll('#bgseg button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#bgseg button').forEach(x=>x.setAttribute('aria-pressed',x===b));
   b.dataset.bg?grid.style.setProperty('--tilebg',b.dataset.bg):grid.style.removeProperty('--tilebg');
   grid.classList.toggle('inverse',!!b.dataset.inverse)}));
 function tog(id,cls){const el=document.getElementById(id);el.addEventListener('click',()=>{const on=el.getAttribute('aria-pressed')!=='true';el.setAttribute('aria-pressed',on);grid.classList.toggle(cls,on)})}
@@ -3857,4 +3863,5 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',a
     try{document.execCommand('copy');say(msg)}catch(_){say('Copy is blocked here. Use the SVG from the zip.')}ta.remove()}
 }));
 </script>
-</body></html>
+</body>
+</html>

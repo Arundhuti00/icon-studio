@@ -53,7 +53,7 @@ To revise, just name the icon and the problem ("the croissant looks broken"). It
 
 ## Examples
 
-Each folder has the SVGs (`icons/`), the locked rules (`RULES.md`) and the preview page (`index.html`). These sets were made before the 16 px variant was added, so they include their master size only.
+Each folder has the SVGs (`icons/`), the locked rules (`RULES.md`) and the preview page (`index.html`). Travel Ink also has hand-drawn 16 px versions in `icons-16/`; Restaurant Folk and Celestial Glass were made before the 16 px variant was added, so they include their master size only.
 
 ### Restaurant Folk Icons · 128 icons
 Flat, two-tone icons on a 64 px grid in a hand-painted Indian-folk palette: food, drinks, dietary tags, ordering and payment, amenities and more.
@@ -63,11 +63,11 @@ Flat, two-tone icons on a 64 px grid in a hand-painted Indian-folk palette: food
 [Icons](examples/restaurant-folk-icons/icons) · [Rules](examples/restaurant-folk-icons/RULES.md) · [Live preview](https://arundhuti00.github.io/icon-studio/examples/restaurant-folk-icons/)
 
 ### Travel Ink Icons · 90 icons
-Hand-drawn dark grey ink on a 48 px grid, each icon with one leaf green and one tangerine accent: luggage, transport, stays, landmarks, weather and more.
+Hand-drawn dark grey ink on a 48 px grid, each icon with one leaf green and one tangerine accent: luggage, transport, stays, landmarks, weather and more. Every icon also has its own 16 px version, redrawn on a 16 grid with a 1 px line.
 
 ![Travel Ink Icons](examples/travel-ink-icons/preview.png)
 
-[Icons](examples/travel-ink-icons/icons) · [Rules](examples/travel-ink-icons/RULES.md) · [Live preview](https://arundhuti00.github.io/icon-studio/examples/travel-ink-icons/)
+[Icons](examples/travel-ink-icons/icons) · [16 px icons](examples/travel-ink-icons/icons-16) · [Rules](examples/travel-ink-icons/RULES.md) · [Live preview](https://arundhuti00.github.io/icon-studio/examples/travel-ink-icons/)
 
 ### Celestial Glass Icons · 64 icons
 Grainy, softly blended space icons in golden browns and ceramic blues on a 64 px grid: planets, spacecraft, astronaut gear, science and a few sci-fi characters.
